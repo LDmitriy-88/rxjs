@@ -7,9 +7,10 @@ import { TabViewModule } from 'primeng/tabview';
 import { AuthComponent } from './auth.component'
 import { InputTextModule} from 'primeng/inputtext';
 import {FormsModule} from "@angular/forms";
-
+import {ToastModule} from 'primeng/toast';
 import {CheckboxModule} from 'primeng/checkbox';
 import { RegistrationComponent } from './registration/registration.component';
+import { MessageService } from 'primeng/api';
 
 
 @NgModule({
@@ -25,7 +26,11 @@ import { RegistrationComponent } from './registration/registration.component';
     TabViewModule,
     InputTextModule,
     FormsModule,
-    CheckboxModule
+    CheckboxModule,
+    ToastModule
+  ],
+  providers:[
+    MessageService
   ]
 })
 export class AuthModule { }
