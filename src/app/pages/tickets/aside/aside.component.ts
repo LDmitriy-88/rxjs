@@ -1,5 +1,8 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { IMenuType } from 'src/app/models/menuType';
+import { IMenuType} from 'src/app/models/menuType';
+import { ITourTypeSelect } from 'src/app/models/tours';
+import { SettingsService } from 'src/app/services/settings/settings.service';
+import { TicketService } from 'src/app/services/tickets/ticket.service';
 
 @Component({
   selector: 'app-aside',
@@ -11,11 +14,21 @@ export class AsideComponent implements OnInit {
   menuTypes: IMenuType[];
   selectedMenuType: IMenuType;
 
+  tourTypes: ITourTypeSelect[] = [
+    {label: 'Все', value: 'all'},
+    {label: 'Одиночный', value: 'single'},
+    {label: 'Групповой', value: 'multi'}
+  ]
+
+
+
  @Output() updateMenuType: EventEmitter<IMenuType> = new EventEmitter();
 
 
 
-  constructor() { }
+  constructor(
+    private ticketService: TicketService,
+    private settingsService: SettingsService) { }
 
   ngOnInit(): void {
     this.menuTypes = [
@@ -30,6 +43,27 @@ export class AsideComponent implements OnInit {
     this.updateMenuType.emit(ev.value);
   }
 
+  changeTourType(ev:  {ev: Event, value: ITourTypeSelect}): void {
+    this.ticketService.updateTour(ev.value)
+  }
+
+  selectDate(ev: string) {
+    console.log('ev', ev)
+    this.ticketService.updateTour({date:ev})
+}
+
+
+initRestError(): void {
+  this.ticketService.getError().subscribe((data) => {}, (err)=> {
+    console.log('err', err)
+  });
+ }
+
+ initSettingsData(): void{
+  this.settingsService.loadUserSettingsSubject({
+    saveToken: false
+  })
+ }
 
 
 }

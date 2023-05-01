@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { IUser } from 'src/app/models/users';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { ConfigService } from 'src/app/services/configService/config.service';
 
 @Component({
   selector: 'app-registration',
@@ -15,11 +16,14 @@ pswRepeat: string;
 email: string;
 cardNumber: string;
 selectedValue: boolean;
+saveUserInStore: boolean;
+showCardNumber: boolean;
 
   constructor(private messageService: MessageService,
     private authService: AuthService){ }
 
   ngOnInit(): void {
+    this.showCardNumber = ConfigService.config.useUserCard;
   }
 
 

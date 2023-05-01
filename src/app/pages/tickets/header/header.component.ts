@@ -65,7 +65,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       },
       {
         label: 'Настройки',
-        routerLink:['/settings'],
+        routerLink:['settings'],
         visible: this.settingsActive
       },
       {

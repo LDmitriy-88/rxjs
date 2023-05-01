@@ -46,29 +46,29 @@ this.activeElementIndex = 0;
   }
 
 
-  initKeyUp(ev: KeyboardEvent): void{
-    if (ev.key ==='ArrowRight' || ev.key === 'ArrowLeft'){
+  initKeyUp(ev: KeyboardEvent): void | boolean{
+    if (ev.key ==='ArrowRight' && this.index <this.items.length|| ev.key === 'ArrowLeft' && this.index >0 ){
     (this.items[this.index] as HTMLElement).removeAttribute('style');
     }
 
 
 
     if(ev.key === 'ArrowRight'){
-      if(this.index <=this.items.length){
+      if(this.index <this.items.length){
       this.index++;
       if (this.items[this.index]){
         (this.items[this.index] as HTMLElement).setAttribute('style', 'border: 2px red solid')
       }
     }
     else{
-      this.activeElementIndex = this.index;
+      return false;
     }
   
   
   }
   
      else if(ev.key === 'ArrowLeft') {
-      if(this.index >=0){
+      if(this.index >0){
       this.index--;
 
       if (this.items[this.index]){
@@ -77,7 +77,7 @@ this.activeElementIndex = 0;
 
     }
     else{
-      this.activeElementIndex = this.index;
+      return false;
     }
     }
 
@@ -95,6 +95,12 @@ this.activeElementIndex = this.index;
 
 
   }
+
+  updateItems(): void {
+    this.items = this.el.nativeElement.querySelectorAll(this.selector);
+  }
+
+
 }
 
 
