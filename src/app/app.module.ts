@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER } from '@angular/core';
 import { AppComponent } from './app.component';
 import {AppRoutingModule} from "./app-routing.module";
-import { RegistrationComponent } from './services/auth/registration/registration.component';
 import { AuthService } from './services/auth/auth.service';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { ConfigService } from './services/configService/config.service';
@@ -15,7 +14,6 @@ import { RestInterceptorsService } from './services/interceptors/rest-intercepto
 @NgModule({
   declarations: [
     AppComponent,
-    RegistrationComponent,
 
   ],
   imports: [

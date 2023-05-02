@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MessageService} from "primeng/api";
 import {UserService} from "../../../services/user/user.service";
-import {IUser} from "../../../models/users";
+
 
 @Component({
   selector: 'app-change-password',
@@ -12,31 +12,31 @@ import {IUser} from "../../../models/users";
 export class ChangePasswordComponent implements OnInit {
   currentPsw : string;
   newPsw: string;
-  newPswRepeat: string
+  newPswRepeat: string;
 
   constructor(private messageService: MessageService,
               private userService: UserService) { }
 
   ngOnInit(): void {
   }
+
+
+
   changePsw(): void | boolean{
-    const userPsw = this.userService.getUser()?.psw;
-    if (userPsw !== this.currentPsw) {
-      this.messageService.add({severity: 'error', summary: 'Error', detail: 'Invalid current passwords'});
-      return false;
-    }
-    if (this.newPsw !== this.newPswRepeat) {
-      this.messageService.add({severity: 'error', summary: 'Error', detail: 'New passwords do not match'});
-      return false;
-    }
-    else {
-      this.messageService.add({severity:'success', summary: 'Success', detail: 'Password successfully changed'});
-      const user = this.userService.getUser();
-      const newUser = <IUser> {...user};
-      newUser.psw = this.newPsw;
-      this.userService.setUser(newUser);
-    }
+
+if (this.newPsw != this.newPswRepeat){
+  this.messageService.add({key: 'pass-err', severity: 'error', summary: 'Новый пароль такой же как старый!'});
+  return false
+} else {
+  this.messageService.add({key:'pass-ok', severity:'success', summary: 'Пароль успешно изменён'});
+  const user = this.userService.getUser();
+  const newUser = {...user};
+  newUser.psw = this.newPsw
+  this.userService.setUser(newUser);
+  return false
+}
+
+}
 
 
-  }
 }
