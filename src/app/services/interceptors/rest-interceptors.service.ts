@@ -17,7 +17,7 @@ intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> 
   if (hasToken){
     const cloned = req.clone({
       headers: req.headers.set("Authorization", 
-      "Bearer" + hasToken)
+      "Bearer " + hasToken)
   });
 
   return next.handle(cloned);

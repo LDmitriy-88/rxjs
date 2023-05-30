@@ -10,6 +10,7 @@ import { TicketService } from 'src/app/services/tickets/ticket.service';
 import { Subscription } from 'rxjs';
 import { ElementRef } from '@angular/core';
 import { TicketRestService } from 'src/app/services/rest/ticket-rest.service';
+import { IOrder } from 'src/app/models/order';
 
 @Component({
   selector: 'app-ticket-item',
@@ -131,7 +132,17 @@ initTour(): void{
 const userData = this.userForm.getRawValue();
 const postData = {...this.ticket, ...userData};
 
-this.ticketService.sendTourData(postData).subscribe()
+const userId = this.userService.getUser()?.id||null;
+
+const postObj: IOrder = {
+  age: postData.age,
+  birthDay: postData.birthDay,
+  cardNumber: postData.cardNumber,
+  tourId: postData._id,
+  userId: userId,
+}
+
+this.ticketService.sendTourData(postObj).subscribe()
 
 
 

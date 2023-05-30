@@ -4,6 +4,8 @@ import { IUser } from 'src/app/models/users';
 import { MessageService } from 'primeng/api';
 import { Router, ActivatedRoute} from '@angular/router';
 import { UserService } from 'src/app/services/user/user.service';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { ServerError } from 'src/app/models/error';
 
 
 @Component({
@@ -29,7 +31,8 @@ export class AuthorizationComponent implements OnInit, OnDestroy, OnChanges {
     private router: Router,
     private route: ActivatedRoute,
     private messageService: MessageService,
-    private userService: UserService){ }
+    private userService: UserService,
+    private http: HttpClient){ }
 
   ngOnInit(): void {
     console.log('init');
@@ -51,11 +54,31 @@ export class AuthorizationComponent implements OnInit, OnDestroy, OnChanges {
   
 
 onAuth(ev: Event): void {
+
   const authUser: IUser = {
     psw: this.psw,
     login: this.login,
     cardNumber: this.cardNumber
   }
+
+  this.http.post<{access_token: string, id: string}>('http://localhost:3000/users/'+authUser.login, authUser).subscribe((data) => {
+ 
+  authUser.id = data.id;
+  this.userService.setUser(authUser);
+  const token: string = data.access_token;
+  this.userService.setToken(token);
+  this.userService.setToStore(token);
+
+
+  this.router.navigate(['tickets/tickets-list']);
+
+}, (err: HttpErrorResponse)=> {
+  const serverError= <ServerError>err.error;
+  this.messageService.add({severity:'warn', summary:serverError.errorText});
+});
+
+
+  /*
   if (this.authService.checkUser(authUser)){
     this.router.navigate(['tickets/tickets-list']);
 
@@ -66,6 +89,7 @@ onAuth(ev: Event): void {
     console.log('auth false')
     this.messageService.add({severity:'error', summary:'Вы не зарегистрированы'});
   }
+  */
 }
 
 

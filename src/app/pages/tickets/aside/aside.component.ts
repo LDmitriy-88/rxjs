@@ -1,6 +1,7 @@
+
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { IMenuType} from 'src/app/models/menuType';
-import { ITourTypeSelect } from 'src/app/models/tours';
+import { ITour, ITourTypeSelect } from 'src/app/models/tours';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { TicketService } from 'src/app/services/tickets/ticket.service';
 
@@ -23,6 +24,7 @@ export class AsideComponent implements OnInit {
 
 
  @Output() updateMenuType: EventEmitter<IMenuType> = new EventEmitter();
+  http: any;
 
 
 
@@ -63,6 +65,18 @@ initRestError(): void {
   this.settingsService.loadUserSettingsSubject({
     saveToken: false
   })
+ }
+
+ initTours(): void {
+  this.http.post("http://localhost:3000/tours/", '').subscribe((data: ITour[])=>{
+    this.ticketService.updateTicketList(data);
+  });
+ }
+
+ deleteTours(): void{
+  this.http.delete('http://localhost:3000/tours').subscribe(()=>{
+    this.ticketService.updateTicketList([]);
+  });
  }
 
 

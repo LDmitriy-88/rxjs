@@ -30,14 +30,17 @@ export class UserService {
  }
 
 
-getToken(): string | null{
-  return this.token /*|| window.localStorage.getItem('Token')*/
+getToken(): string | any{
+  return this.token || localStorage.getItem('Token')
+  
 };
 
 setToken(token: string): void{
   this.token = token;
-  /*window.localStorage.setItem('Token', (token))*/
+  
  };
 
-
+ setToStore(token: string): void{
+  localStorage.setItem('Token', token);
+ }
 }
